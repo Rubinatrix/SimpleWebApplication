@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <script src="jquery-1.11.3.js"></script>
+
+    <script>
+
+    function ajaxPOST()
+        {
+            // create JSON body for our request
+            var requestBody = {"content": document.getElementById('Input').value};
+
+            // send POST request with our JSON body and proceed the server response
+            $.ajax({
+                url: 'http://localhost:8080',
+                dataType: 'json',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(requestBody),
+                success: function(data, textStatus, jQxhr){
+                    serverResponseBody = JSON.parse(jQxhr.responseText);
+                    if (serverResponseBody.errorCode == 0) {
+                        document.getElementById('Output').value = serverResponseBody.content;
+                    } else {
+                        console.log(serverResponseBody.errorDescription);
+                        alert(serverResponseBody.errorDescription);
+                    }
+                },
+                error: function(jqXhr, textStatus, errorThrown){
+                    console.log(errorThrown);
+                    alert(errorThrown);
+                }
+            });
+        }
+
+    </script>
+
+</head>
+
+<body>
+
+<p><b>Input:</b></p>
+
+<p><textarea rows="10" cols="45" name="Input" id="Input">
+Hello World
+Hello Earth
+Hello World Earth Hello
+World
+Hello
+</textarea></p>
+
+<button name="Proceed" onclick="ajaxPOST()">Proceed</button>
+
+<p><b>Output:</b></p>
+
+<p><textarea rows="10" cols="45" name="Output" id="Output"></textarea></p>
+
+</body>
+
+</html>
